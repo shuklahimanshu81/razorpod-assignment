@@ -1,11 +1,8 @@
-// app/page.tsx - Main Component
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search } from 'lucide-react';
 
-// Components
 import { Header } from '../components/layout/Header';
 import { FilterPanel } from '../components/ui/FilterPanel';
 import { ProductCard } from '../components/ui/ProductCard';
@@ -14,39 +11,32 @@ import { Pagination } from '../components/ui/Pagination';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import { ErrorState } from '../components/ui/ErrorState';
 
-// Hooks
 import { useProducts } from '../hooks/useProducts';
 import { useCategories } from '../hooks/useCategories';
 import { usePagination } from '../hooks/usePagination';
 
-// Types and Utils
 import { Product } from '../types/product';
 import { fetchProductById } from '../utils/api';
-import { staggerContainer, fadeInUp, scaleIn, buttonHover, buttonTap } from '../utils/animations';
-import { MESSAGES, PAGINATION } from '../constants';
+import { staggerContainer, scaleIn } from '../utils/animations';
+import {  PAGINATION } from '../constants';
 
 export default function ProductShowcaseExplorer() {
-  // Filter states
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [sortBy, setSortBy] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   
-  // Modal states
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Categories hook
   const { categories } = useCategories();
 
-  // Pagination hook - initialize with proper reset triggers
   const pagination = usePagination({
-    totalItems: 0, // Will be updated when we get products
+    totalItems: 0, 
     itemsPerPage: PAGINATION.PRODUCTS_PER_PAGE,
     resetTriggers: [selectedCategory, searchTerm]
   });
 
-  // Products hook
   const { 
     filteredProducts, 
     loading, 
@@ -60,12 +50,10 @@ export default function ProductShowcaseExplorer() {
     sortBy
   });
 
-  // Update pagination total when products change
   const totalPages = Math.ceil(totalProducts / PAGINATION.PRODUCTS_PER_PAGE);
   const startResult = (pagination.currentPage - 1) * PAGINATION.PRODUCTS_PER_PAGE + 1;
   const endResult = Math.min(pagination.currentPage * PAGINATION.PRODUCTS_PER_PAGE, totalProducts);
 
-  // Handle product detail modal
   const openProductDetail = async (productId: number) => {
     try {
       const product = await fetchProductById(productId);
@@ -81,19 +69,16 @@ export default function ProductShowcaseExplorer() {
     setSelectedProduct(null);
   };
 
-  // Clear all filters
   const clearFilters = () => {
     setSearchTerm('');
     setSelectedCategory('');
     setSortBy('');
   };
 
-  // Loading state
   if (loading) {
     return <LoadingSpinner />;
   }
 
-  // Error state
   if (error) {
     return <ErrorState error={error} onRetry={refetch} />;
   }
@@ -104,14 +89,11 @@ export default function ProductShowcaseExplorer() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      {/* Fixed Header */}
       <Header onFilterToggle={() => setShowFilters(!showFilters)} />
 
-      {/* Main container with proper mobile spacing */}
       <div className="w-full">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
           
-          {/* Filter Panel with mobile-first design */}
           <FilterPanel
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
@@ -122,14 +104,11 @@ export default function ProductShowcaseExplorer() {
             categories={categories}
             onClearFilters={clearFilters}
             showFilters={showFilters}
-            setShowFilters={setShowFilters}
           />
 
-          {/* Products Grid with proper mobile centering */}
           <AnimatePresence mode="wait">
             {filteredProducts.length > 0 ? (
               <motion.div key="products" layout>
-                {/* Centered grid with responsive columns */}
                 <motion.div 
                   className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-12 w-full place-items-center sm:place-items-stretch"
                   variants={staggerContainer}
@@ -150,7 +129,6 @@ export default function ProductShowcaseExplorer() {
                   </AnimatePresence>
                 </motion.div>
 
-                {/* Pagination with mobile responsiveness */}
                 <Pagination
                   currentPage={pagination.currentPage}
                   totalPages={totalPages}
@@ -161,7 +139,6 @@ export default function ProductShowcaseExplorer() {
                 />
               </motion.div>
             ) : (
-              // No results state - properly centered
               <motion.div 
                 key="no-results"
                 className="text-center py-12 sm:py-20 px-4"
@@ -170,14 +147,12 @@ export default function ProductShowcaseExplorer() {
                 animate="visible"
                 exit="exit"
               >
-                {/* ... existing no results content ... */}
               </motion.div>
             )}
           </AnimatePresence>
         </div>
       </div>
 
-      {/* Product Detail Modal */}
       <ProductDetailModal
         product={selectedProduct}
         isOpen={isModalOpen}

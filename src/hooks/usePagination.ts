@@ -2,10 +2,10 @@ import { useState, useEffect, useMemo } from 'react';
 import { PAGINATION } from '@/constants';
 
 interface UsePaginationParams {
-  totalItems: number;
-  itemsPerPage?: number;
-  resetTriggers?: any[];
-}
+    totalItems: number;
+    itemsPerPage?: number;
+    resetTriggers?: (string | number | boolean | null | undefined)[];
+  }
 
 interface UsePaginationReturn {
   currentPage: number;

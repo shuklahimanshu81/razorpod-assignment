@@ -41,7 +41,6 @@ export interface Product {
     categories: string[];
     onClearFilters: () => void;
     showFilters: boolean;
-    setShowFilters: (show: boolean) => void;
   }
   
   export interface PaginationProps {
@@ -67,3 +66,12 @@ export interface Product {
   }
   
   export type SortOption = 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc' | 'rating-desc' | 'discount-desc' | '';
+
+  export interface CategoryItem {
+    slug?: string;
+    name?: string;
+    id?: number;
+    url?: string;
+  }
+  
+  export type CategoryResponse = string | CategoryItem;

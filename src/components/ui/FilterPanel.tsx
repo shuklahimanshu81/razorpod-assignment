@@ -18,7 +18,6 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   categories,
   onClearFilters,
   showFilters,
-  setShowFilters
 }) => {
   const shouldShowFilters = showFilters || (typeof window !== 'undefined' && window.innerWidth >= 768);
 

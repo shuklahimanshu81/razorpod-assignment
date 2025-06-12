@@ -1,5 +1,5 @@
 import { API_ENDPOINTS } from '@/constants';
-import { Product, ApiResponse } from '@/types/product';
+import { Product, ApiResponse, CategoryResponse } from '@/types/product';
 
 async function fetchWithErrorHandling<T>(url: string): Promise<T> {
   try {
@@ -35,10 +35,17 @@ export async function fetchProductById(id: number): Promise<Product> {
   return fetchWithErrorHandling<Product>(url);
 }
 
+
+
 export async function fetchCategories(): Promise<string[]> {
-  const data = await fetchWithErrorHandling<any[]>(API_ENDPOINTS.CATEGORIES);
-  return data.map((cat: any) => cat.slug || cat.name || cat);
-}
+    const data = await fetchWithErrorHandling<CategoryResponse[]>(API_ENDPOINTS.CATEGORIES);
+    return data.map((cat: CategoryResponse) => {
+      if (typeof cat === 'string') {
+        return cat;
+      }
+      return cat.slug || cat.name || String(cat);
+    });
+  }
 
 export function sortProducts(products: Product[], sortBy: string): Product[] {
   const sorted = [...products];
