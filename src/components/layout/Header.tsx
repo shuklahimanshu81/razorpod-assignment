@@ -24,7 +24,7 @@ export const Header: React.FC<HeaderProps> = ({ onFilterToggle }) => {
               <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
             <h1 className="text-lg sm:text-xl md:text-2xl font-black text-gray-900 tracking-tight">
-              <span className="hidden sm:inline">Product Showcase</span>
+              <span className="hidden sm:inline">Razorpod</span>
               <span className="sm:hidden">Products</span>
             </h1>
           </motion.div>
