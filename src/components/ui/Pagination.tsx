@@ -4,7 +4,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { PaginationProps } from '../../types/product';
-import { buttonHover, buttonTap } from '../../utils/animations';
 
 export const Pagination: React.FC<PaginationProps> = ({
   currentPage,
@@ -26,7 +25,7 @@ export const Pagination: React.FC<PaginationProps> = ({
     } else {
       const halfVisible = Math.floor(maxVisible / 2);
       let start = Math.max(1, currentPage - halfVisible);
-      let end = Math.min(totalPages, start + maxVisible - 1);
+      const end = Math.min(totalPages, start + maxVisible - 1);
       
       if (end === totalPages) {
         start = Math.max(1, end - maxVisible + 1);
